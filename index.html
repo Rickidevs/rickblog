@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Challenge - Rickblog</title> 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: #000;
+            color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        #intro-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            opacity: 1;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        #password-container {
+            display: none;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(30, 30, 30, 0.7);
+            border: 1px solid #444;
+            border-radius: 5px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        input {
+            background-color: #111;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px 15px;
+            width: 100%;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 3px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #666;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        #result-message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            height: 24px;
+        }
+
+        .success {
+            color: #4CAF50;
+        }
+
+        .error {
+            color: #F44336;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #fff;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        #main-content {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #countdown {
+            font-size: 36px;
+            margin: 20px 0;
+            color: #0af;
+            font-weight: bold;
+        }
+
+        .redirect-message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .code-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        #language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        #language-selector select {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        #language-selector select:focus {
+            border-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <canvas class="code-rain" id="matrix"></canvas>
+    
+    <div class="container">
+        <div id="intro-text"></div>
+        
+        <div id="language-selector">
+            <select id="lang-select">
+                <option value="en">Eng</option>
+                <option value="de">Deu</option>
+                <option value="tr">Tur</option>
+                <option value="az">Aze</option>
+            </select>            
+        </div>
+
+        <div id="password-container">
+            <h2>Giriş Doğrulama</h2>
+            <p>Lütfen erişim şifresini girin:</p>
+            <input type="password" id="password-input" placeholder="Şifre">
+            <button id="submit-btn">Doğrula</button>
+            <div id="result-message"></div>
+        </div>
+        
+        <div id="main-content">
+            <h1>Erişim Onaylandı</h1>
+            <p class="redirect-message">Siteye yönlendirileceksiniz...</p>
+            <div id="countdown">5</div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                introText: "Welcome! But only real hackers can access this site. So, you’ll need to bypass the password screen coming up to reach the homepage...",
+                verifyTitle: "Access Verification",
+                verifyText: "[Please do not use bruteforce]",
+                passwordPlaceholder: "Password",
+                verifyBtn: "Verify",
+                wrongPassword: "Sorry, that was the wrong answer.",
+                accessGranted: "Access Granted",
+                redirecting: "Redirecting to the site...",
+            },
+
+            de: {
+                introText: "Willkommen! Aber nur echte Hacker können auf diese Seite zugreifen. Du musst also gleich den Passwortbildschirm umgehen, um zur Startseite zu gelangen...",
+                verifyTitle: "Zugangsverifizierung",
+                verifyText: "[Bitte kein Bruteforce verwenden]",
+                passwordPlaceholder: "Passwort",
+                verifyBtn: "Verifizieren",
+                wrongPassword: "Sorry, das war die falsche Antwort.",
+                accessGranted: "Zugang gewährt",
+                redirecting: "Weiterleitung zur Seite...",
+            },
+
+            az: {
+                introText: "Xoş gəlmisən! Amma bu sayta yalnız həqiqi hakerlər daxil ola bilər. Buna görə ana səhifəyə keçmək üçün az sonra çıxacaq şifrə ekranını keçməlisən...",
+                verifyTitle: "Girişin Doğrulanması",
+                verifyText: "[bruteforce istifadə etməyin]",
+                passwordPlaceholder: "Şifrə",
+                verifyBtn: "Təsdiqlə",
+                wrongPassword: "Bağışlayın, bu səhv cavab idi.",
+                accessGranted: "Giriş Təsdiqləndi",
+                redirecting: "Sayta yönləndirilirsiniz...",
+            },
+
+            tr: {
+                introText: "Hoşgeldin! Fakat bu siteye sadece gerçek hackerlar erişim sağlayabilir. Bu yüzden az sonra gelecek olan şifre ekranını bypass ederek ana sayfaya erişmen gerek...",
+                verifyTitle: "Giriş Doğrulama",
+                verifyText: "[Lütfen bruteforce kullanmayın]",
+                passwordPlaceholder: "Şifre",
+                verifyBtn: "Doğrula",
+                wrongPassword: "Üzgünüm, bu yanlış cevaptı.",
+                accessGranted: "Erişim Onaylandı",
+                redirecting: "Siteye yönlendirileceksiniz...",
+            },
+        };
+
+        let currentLang = 'en';
+        let typing = null;
+        let typingSpeed = 50;
+        let textProgress = 0;
+        let fullText = "";
+        
+        const langSelect = document.getElementById('lang-select');
+        const introText = document.getElementById('intro-text');
+        const passwordContainer = document.getElementById('password-container');
+        const resultMessage = document.getElementById('result-message');
+        const mainContent = document.getElementById('main-content');
+        const countdownElement = document.getElementById('countdown');
+        const passwordInput = document.getElementById('password-input');
+        const submitBtn = document.getElementById('submit-btn');
+        
+        langSelect.addEventListener('change', function() {
+            currentLang = this.value;
+            applyTranslations();
+            
+            resetAndRestartTyping();
+        });
+
+        function applyTranslations() {
+            const t = translations[currentLang];
+            
+            document.querySelector('#password-container h2').textContent = t.verifyTitle;
+            document.querySelector('#password-container p').textContent = t.verifyText;
+            passwordInput.placeholder = t.passwordPlaceholder;
+            submitBtn.textContent = t.verifyBtn;
+            
+            if (mainContent.style.display === 'block') {
+                document.querySelector('#main-content h1').textContent = t.accessGranted;
+                document.querySelector('.redirect-message').textContent = t.redirecting;
+            }
+            
+            if (resultMessage.className === 'error') {
+                resultMessage.textContent = t.wrongPassword;
+            }
+            
+            fullText = t.introText;
+        }
+
+        function resetAndRestartTyping() {
+            if (typing) {
+                clearInterval(typing);
+            }
+            
+            textProgress = 0;
+            introText.innerHTML = '';
+            
+            startTyping();
+        }
+
+        function startTyping() {
+            fullText = translations[currentLang].introText;
+            
+            typing = setInterval(() => {
+                if (textProgress < fullText.length) {
+
+                    introText.innerHTML = fullText.substring(0, textProgress) + '<span class="cursor"></span>';
+                    textProgress++;
+                } else {
+
+                    clearInterval(typing);
+                    introText.innerHTML = fullText;
+                    
+                    setTimeout(() => {
+                        introText.classList.add('fade-out');
+                        
+                        setTimeout(() => {
+                            introText.style.display = 'none';
+                            passwordContainer.style.display = 'block';
+                        }, 1000);
+                    }, 1000);
+                }
+            }, typingSpeed);
+        }
+
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネハヒフヘホマミムメモヤユヨラリルレワヲン';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0af';
+            ctx.font = `${fontSize}px monospace`;
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 30);
+        
+        const authCookie = getCookie('hackerAuth');
+        
+        if (authCookie === 'true') {
+            introText.style.display = 'none';
+            passwordContainer.style.display = 'none';
+            mainContent.style.display = 'block';
+            applyTranslations();
+            startCountdown();
+        } else {
+            applyTranslations();
+            
+            setTimeout(() => {
+                startTyping();
+            }, 500);
+        }
+        
+        const correctPassword = 'GolbRick@xyz-$';
+        
+        submitBtn.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        function checkPassword() {
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === correctPassword) {
+                resultMessage.innerHTML = '...';
+                resultMessage.className = 'success';
+                
+                setCookie('hackerAuth', 'true', 30);
+                
+                setTimeout(() => {
+                    passwordContainer.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    applyTranslations();
+                    startCountdown();
+                }, 1500);
+            } else {
+                resultMessage.innerHTML = translations[currentLang].wrongPassword;
+                resultMessage.className = 'error';
+                passwordInput.value = '';
+                
+                passwordContainer.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    passwordContainer.style.animation = '';
+                }, 500);
+            }
+        }
+        
+        function startCountdown() {
+            let seconds = 5;
+            
+            const countdown = setInterval(() => {
+                seconds--;
+                countdownElement.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdown);
+                    window.location.href = 'home.html';
+                }
+            }, 1000);
+        }
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+            </style>
+        `);
+    </script>
+</body>
+</html>
