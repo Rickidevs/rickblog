@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Cyber-Security | RickBlog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff88;
+            --primary-dark: #00cc6a;
+            --secondary: #00b4d8;
+            --dark: #0a0a0a;
+            --darker: #000000;
+            --light: #ffffff;
+            --gray: #8a8a8a;
+            --terminal: #0aff0a;
+            --terminal-bg: rgba(10, 255, 10, 0.05);
+            --success: #00b894;
+            --danger: #ff3333;
+            --warning: #fdcb6e;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .code-font {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 0 50px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 70% 30%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .hero-text {
+            flex: 1;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text h1 span {
+            color: var(--primary);
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: var(--gray);
+            max-width: 600px;
+        }
+
+        .terminal-window {
+            background: var(--dark);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .terminal-btn.red {
+            background: #ff5f56;
+        }
+
+        .terminal-btn.yellow {
+            background: #ffbd2e;
+        }
+
+        .terminal-btn.green {
+            background: #27c93f;
+        }
+
+        .terminal-title {
+            flex-grow: 1;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .terminal-body {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--terminal);
+            line-height: 1.5;
+        }
+
+        .terminal-body .command {
+            color: var(--secondary);
+        }
+
+        .terminal-body .output {
+            color: var(--light);
+        }
+
+        .terminal-body .path {
+            color: var(--primary);
+        }
+
+        .terminal-body .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: var(--terminal);
+            vertical-align: middle;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: var(--transition);
+        }
+
+        .hero-image img:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: var(--dark);
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title h2 span {
+            color: var(--primary);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            color: var(--gray);
+        }
+
+        .about-skills {
+            flex: 1;
+        }
+
+        .skill-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .skill-bar {
+            height: 10px;
+            background: var(--dark);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+            position: relative;
+            transition: width 1.5s ease;
+        }
+
+        .skill-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 2s infinite;
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-category {
+            background: var(--dark);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            transition: var(--transition);
+        }
+
+        .skill-category:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .skill-category h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-category h3 i {
+            margin-right: 10px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: var(--transition);
+        }
+
+        .skill-tag:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--dark);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .project-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-content h3 {
+            color: var(--light);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .project-content p {
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .project-tag {
+            background: rgba(0, 180, 216, 0.1);
+            color: var(--secondary);
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .project-links a:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        .ctf-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .ctf-card {
+            background: var(--dark);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .ctf-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .ctf-header {
+            padding: 15px 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ctf-title {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .ctf-date {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .ctf-content {
+            padding: 20px;
+        }
+
+        .ctf-content p {
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .ctf-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+        }
+
+        .ctf-stat {
+            display: flex;
+            align-items: center;
+            color: var(--gray);
+        }
+
+        .ctf-stat i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        footer {
+            background: var(--dark);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .terminal-window {
+                margin: 0 auto 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: var(--darker);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                transition: var(--transition);
+                z-index: 999;
+                border-top: 1px solid rgba(0, 255, 136, 0.1);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .btn-group {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn-outline {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container header-container">
+            <a href="home.html" class="logo">root@<span>elvin</span></a>
+            
+            <nav class="nav-links">
+                <a href="home.html" class="active">Home</a>
+                <a href="home.html#about">About</a>
+                <a href="home.html#skills">Skills</a>
+                <a href="home.html#projects">Projects</a>
+                <a href="home.html#ctf">CTF</a>
+                <a href="edu.html">Education</a>
+            </nav>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Hi, I'm <span>Elvin Latifli</span></h1>
+                <p>Cyber security expert, pentester and security researcher. I test systems, find vulnerabilities and develop secure solutions</p>
+                
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-btn red"></div>
+                        <div class="terminal-btn yellow"></div>
+                        <div class="terminal-btn green"></div>
+                        <div class="terminal-title">terminal</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div><span class="path">user@kalilinux:~$</span> <span class="command">whoami</span></div>
+                        <div class="output">cyber security expert | pentester | security researcher</div>
+                        <div><span class="path">user@kalilinux:~$</span> <span class="command"></span><span class="cursor"></span></div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <a href="mailto:elvinlatifli@proton.me" class="btn">Contact Me</a>
+                    <a href="#projects" class="btn btn-outline">My Projects</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="ytpp.jpg" alt="Profile Image">
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About <span>Me</span></h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Note..</h3>
+                    <p>I first heard the term “hacker” when I was 13. Something stirred inside me — as if I knew from that moment on, this word would define my life. It felt different, powerful, and I started digging deeper. It wasn’t easy, but it was never impossible. With nothing but a 2GB RAM computer, I made it this far. And I know there’s still a long journey ahead.</p>
+                    <p>Now that I’ve reached a certain level, I approach things more seriously and consciously. I imagine some of you reading this might just be starting your own journey. If your dream is to become a hacker, you need to begin by accepting that this path is challenging. At times, you’ll want to quit. Sometimes, hearing others’ success stories will make you feel left behind or not good enough. There will be moments when nothing seems to work. And then there will be moments when you say, “Yes, I’m really doing this.”</p>
+                    <p>Just don’t forget: The best time to start something was 10 years ago. The second-best time is right now..</p>
+                </div>
+                
+                <div class="about-skills">
+                    <h3>Core Skills</h3>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span>Penetration Testing</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span>Vulnerability Assessment</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span>Network Security</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span>Web App Security</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 88%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span>Security Tool Development</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="skills">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technical <span>Skills</span></h2>
+            </div>
+            
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Programming</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Go</span>
+                        <span class="skill-tag">PHP</span>
+                        <span class="skill-tag">Bash</span>
+                        <span class="skill-tag">C</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">HTML/CSS</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Penetration Testing</span>
+                        <span class="skill-tag">Vulnerability Assessment</span>
+                        <span class="skill-tag">Network Security</span>
+                        <span class="skill-tag">Web App Security</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3><i class="fas fa-server"></i> OS</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Kali Linux</span>
+                        <span class="skill-tag">Parrot OS</span>
+                        <span class="skill-tag">Arch Linux</span>
+                        <span class="skill-tag">Ubuntu</span>
+                        <span class="skill-tag">Debian</span>
+                        <span class="skill-tag">Windows</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3><i class="fas fa-envelope"></i> Other skills</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Backend Development</span>
+                        <span class="skill-tag">Frontend Development</span>
+                        <span class="skill-tag">Software Development</span>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="projects">
+        <div class="container">
+            <div class="section-title">
+                <h2>Security <span>Projects</span></h2>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="rickmap.png" alt="Project 1" class="project-img">
+                    <div class="project-content">
+                        <h3>Rickmap</h3>
+                        <p>Fast port scanning tool developed with Go. Not as professional as nmap, but much faster than nmap</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Go</span>
+                            <span class="project-tag">Network</span>
+                            <span class="project-tag">Security</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/RickMap"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rickidevs/RickMap"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="rickpass.png" alt="Project 2" class="project-img">
+                    <div class="project-content">
+                        <h3>Rickpass</h3>
+                        <p>An open source project developed for users to test password strength</p>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">Html</span>
+                            <span class="project-tag">Css</span>
+
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/RickPass.github.io"><i class="fab fa-github"></i></a>
+                            <a href="https://rickpass.xyz/"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="Rİckphis.png" alt="Project 3" class="project-img">
+                    <div class="project-content">
+                        <h3>Rickphis</h3>
+                        <p>professional instagram phishing simulatorfor ethical purposes only!</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">Html</span>
+                            <span class="project-tag">Css</span>
+                            <span class="project-tag">Shell</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/Rickphis"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rickidevs/Rickphis"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="clipboardm.png" alt="Project 2" class="project-img">
+                    <div class="project-content">
+                        <h3>Clipboard Manager</h3>
+                        <p>clipoard manager was developed specifically for kali linux, similar to windows</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">Shell</span>
+
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/Clipboard"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rickidevs/Clipboard"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="rickshell.png" alt="Project 2" class="project-img">
+                    <div class="project-content">
+                        <h3>RickShell</h3>
+                        <p>automatically gives you 100s of reverse shlel commands by filling in the ip port sections</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">Shell</span>
+
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/RickShell"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rickidevs/RickShell"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="myip.png" alt="Project 2" class="project-img">
+                    <div class="project-content">
+                        <h3>Myip</h3>
+                        <p>Find out your public ip address, whether you are on the tor network and much more with a single command</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/IP_Checker"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rickidevs/IP_Checker"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="wordlistg.png" alt="Project 2" class="project-img">
+                    <div class="project-content">
+                        <h3>Wordlist Generator</h3>
+                        <p>Tool prepared for you to create a special worldist suitable for your target</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">Shell</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/WordListGenerator"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rickidevs/WordListGenerator"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="mrdpg.png" alt="Project 2" class="project-img">
+                    <div class="project-content">
+                        <h3>Modern RPG</h3>
+                        <p>offline password manager. use it and keep it safe!...</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">Html</span>
+                            <span class="project-tag">Css</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Rickidevs/WordListGenerator"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rickidevs/WordListGenerator"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="ctf">
+        <div class="container">
+            <div class="section-title">
+                <h2>CTF <span>Machines</span></h2>
+            </div>
+            
+            <div class="ctf-container">
+                <div class="ctf-card">
+                    <div class="ctf-header">
+                        <div class="ctf-title">Hospital?!</div>
+                        <div class="ctf-date">Coming Soon...</div>
+                    </div>
+                    <div class="ctf-content">
+                        <p>A reputable hospital's website has been cyber-attacked and all patient information has been compromised. we ask you to find this vulnerability and report it to us!</p>
+                        <div class="ctf-stats">
+                            <div class="ctf-stat"><i class="fas fa-flag"></i> 50 Points</div>
+                            <div class="ctf-stat"><i class="fas fa-trophy"></i>3 Flags</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="https://github.com/Rickidevs"><i class="fab fa-github"></i></a>
+                    <a href="www.linkedin.com/in/elvinlatifli"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:elvinlatifli@proton.me"><i class="fas fa-envelope"></i></a>
+                    <a href="https://tryhackme.com/p/MrHex"><i class="fas fa-hat-wizard"></i></a>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="home.html#about">About</a>
+                    <a href="home.html#skills">Skills</a>
+                    <a href="home.html#projects">Projects</a>
+                    <a href="home.html#ctf">CTF</a>
+                    <a href="edu.html">Education</a>
+                </div>
+                
+                <p class="copyright">© 2025 RickBlog All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        function getCookie(name) {
+            const cookieName = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+            
+            for(let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const hackerAuth = getCookie('hackerAuth');
+            
+            if (hackerAuth !== "true") {
+                window.location.href = 'index.html';
+            }
+        });
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        const skillBars = document.querySelectorAll('.skill-progress');
+        
+        function animateSkillBars() {
+            skillBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        }
+        
+        const observerOptions = {
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('about-skills')) {
+                        animateSkillBars();
+                    }
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        const terminalCommands = [
+            "nmap -sV -A rickblog.xyz",
+            "sqlmap -u 'http://rickblog.xyz/page.php?id=1' --dbs",
+            "hydra -l admin -P passwords.txt ssh://rickblog.xyz",
+            "aircrack-ng capture.cap -w wordlist.txt",
+            "RickShell -p nc --port 4444",
+        ];
+
+        const terminalCursor = document.querySelector('.terminal-body .cursor');
+        const terminalOutput = document.querySelector('.terminal-body');
+        let currentCommand = 0;
+        let currentChar = 0;
+        let isTyping = true;
+
+        function typeTerminal() {
+            if (currentCommand >= terminalCommands.length) {
+                currentCommand = 0;
+            }
+
+            const command = terminalCommands[currentCommand];
+            
+            if (isTyping) {
+                if (currentChar < command.length) {
+                    terminalCursor.insertAdjacentHTML('beforebegin', command[currentChar]);
+                    currentChar++;
+                    setTimeout(typeTerminal, Math.random() * 100 + 50);
+                } else {
+                    isTyping = false;
+                    setTimeout(typeTerminal, 1000);
+                }
+            } else {
+                if (currentChar > 0) {
+                    terminalCursor.previousSibling.remove();
+                    currentChar--;
+                    setTimeout(typeTerminal, 30);
+                } else {
+                    isTyping = true;
+                    currentCommand++;
+                    setTimeout(typeTerminal, 500);
+                }
+            }
+        }
+
+        setTimeout(typeTerminal, 3000);
+    </script>
+</body>
+</html> 
