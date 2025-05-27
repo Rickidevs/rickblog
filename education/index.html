@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/images/favicon.png">
-    <title>Cyber Education</title>
+    <title>Python - Qaranlıq Təhlükə | Cyber Education Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -22,6 +22,8 @@
             --danger: #ff3333;
             --warning: #fdcb6e;
             --transition: all 0.3s ease;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
         }
 
         * {
@@ -130,142 +132,100 @@
             cursor: pointer;
         }
 
-        .hero {
+        .product-section {
+            padding: 120px 0 50px;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 100px 0 50px;
-            position: relative;
-            overflow: hidden;
-            background: radial-gradient(circle at 70% 30%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
         }
 
-        .hero-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 50px;
-        }
-
-        .hero-text {
-            flex: 1;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero-text h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .hero-text h1 span {
-            color: var(--primary);
-        }
-
-        .hero-text p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            color: var(--gray);
-            max-width: 600px;
-        }
-
-        .terminal-window {
-            background: var(--dark);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .terminal-header {
-            display: flex;
             align-items: center;
-            margin-bottom: 15px;
         }
 
-        .terminal-btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
+        .product-gallery {
+            position: relative;
         }
 
-        .terminal-btn.red {
-            background: #ff5f56;
-        }
-
-        .terminal-btn.yellow {
-            background: #ffbd2e;
-        }
-
-        .terminal-btn.green {
-            background: #27c93f;
-        }
-
-        .terminal-title {
-            flex-grow: 1;
-            text-align: center;
-            color: var(--gray);
-            font-size: 0.8rem;
-        }
-
-        .terminal-body {
-            font-family: 'Roboto Mono', monospace;
-            color: var(--terminal);
-            line-height: 1.5;
-        }
-
-        .terminal-body .command {
-            color: var(--secondary);
-        }
-
-        .terminal-body .output {
-            color: var(--light);
-        }
-
-        .terminal-body .path {
-            color: var(--primary);
-        }
-
-        .terminal-body .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 18px;
-            background: var(--terminal);
-            vertical-align: middle;
-            margin-left: 5px;
-            animation: blink 1s infinite;
-        }
-
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            animation: fadeIn 1.5s ease;
-        }
-
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        .product-main-image {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(0, 255, 136, 0.2);
             transition: var(--transition);
         }
 
-        .hero-image img:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        .product-main-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        .product-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .product-author {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .product-description {
+            color: var(--gray);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .product-meta {
+            margin-bottom: 30px;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .product-price .original-price {
+            text-decoration: line-through;
+            color: var(--gray);
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .btn {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 12px 25px;
             background: var(--primary);
             color: var(--dark);
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
@@ -278,7 +238,7 @@
 
         .btn:hover {
             background: var(--primary-dark);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4);
         }
 
@@ -286,7 +246,6 @@
             background: transparent;
             border: 2px solid var(--primary);
             color: var(--primary);
-            margin-left: 15px;
         }
 
         .btn-outline:hover {
@@ -294,8 +253,105 @@
             color: var(--dark);
         }
 
-        .section {
-            padding: 100px 0;
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1rem;
+        }
+
+        .product-details {
+            margin-bottom: 30px;
+        }
+
+        .details-title {
+            color: var(--light);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .details-title::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+        }
+
+        .details-list {
+            list-style: none;
+        }
+
+        .details-list li {
+            margin-bottom: 10px;
+            color: var(--gray);
+            display: flex;
+        }
+
+        .details-list li::before {
+            content: '▹';
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .product-tabs {
+            margin-top: 50px;
+        }
+
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            bottom: -1px;
+            left: 0;
+        }
+
+        .tab-content {
+            display: none;
+            color: var(--gray);
+            line-height: 1.7;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .testimonials-section {
+            background: rgba(0, 255, 136, 0.02);
+            padding: 60px 0;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
         }
 
         .section-title {
@@ -309,10 +365,18 @@
             color: var(--light);
             text-transform: uppercase;
             letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
         .section-title h2 span {
             color: var(--primary);
+        }
+
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .section-title::after {
@@ -327,273 +391,155 @@
             border-radius: 2px;
         }
 
-        .about-content {
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--dark);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-size: 3rem;
+            color: var(--primary);
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            opacity: 0.3;
+        }
+
+        .testimonial-text {
+            color: var(--gray);
+            font-style: italic;
+            margin-bottom: 20px;
+            padding-top: 30px;
+        }
+
+        .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 50px;
+            gap: 15px;
         }
 
-        .about-text {
-            flex: 1;
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--light);
-        }
-
-        .about-text p {
-            margin-bottom: 15px;
-            color: var(--gray);
-        }
-
-        .about-skills {
-            flex: 1;
-        }
-
-        .skill-item {
-            margin-bottom: 20px;
-        }
-
-        .skill-info {
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .testimonial-info h5 {
+            color: var(--light);
             margin-bottom: 5px;
         }
 
-        .skill-bar {
-            height: 10px;
-            background: var(--dark);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 5px;
-            position: relative;
-            transition: width 1.5s ease;
-        }
-
-        .skill-progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shine 2s infinite;
-        }
-
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .skill-category {
-            background: var(--dark);
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid rgba(0, 255, 136, 0.1);
-            transition: var(--transition);
-        }
-
-        .skill-category:hover {
-            border-color: rgba(0, 255, 136, 0.3);
-            transform: translateY(-5px);
-        }
-
-        .skill-category h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .skill-category h3 i {
-            margin-right: 10px;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .skill-tag {
-            background: rgba(0, 255, 136, 0.1);
-            color: var(--primary);
-            padding: 5px 15px;
-            border-radius: 30px;
+        .testimonial-info p {
+            color: var(--gray);
             font-size: 0.8rem;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            transition: var(--transition);
         }
 
-        .skill-tag:hover {
-            background: rgba(0, 255, 136, 0.2);
-            transform: translateY(-2px);
+        .related-products {
+            padding: 60px 0;
         }
 
-        .projects-grid {
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
         }
 
-        .project-card {
+        .product-card {
             background: var(--dark);
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             transition: var(--transition);
             border: 1px solid rgba(0, 255, 136, 0.1);
         }
 
-        .project-card:hover {
+        .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             border-color: rgba(0, 255, 136, 0.3);
         }
 
-        .project-img {
+        .product-card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 10;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        .product-card-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
         }
 
-        .project-content {
+        .product-card-content {
             padding: 20px;
         }
 
-        .project-content h3 {
+        .product-card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
             color: var(--light);
             margin-bottom: 10px;
-            font-size: 1.3rem;
         }
 
-        .project-content p {
-            color: var(--gray);
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .project-tag {
-            background: rgba(0, 180, 216, 0.1);
-            color: var(--secondary);
-            padding: 3px 10px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            border: 1px solid rgba(0, 180, 216, 0.2);
-        }
-
-        .project-links {
-            display: flex;
-            gap: 10px;
-        }
-
-        .project-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 35px;
-            height: 35px;
-            background: rgba(0, 255, 136, 0.1);
+        .product-card-author {
             color: var(--primary);
-            border-radius: 50%;
-            transition: var(--transition);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: block;
         }
 
-        .project-links a:hover {
-            background: var(--primary);
-            color: var(--dark);
-            transform: translateY(-3px);
+        .product-card-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
         }
 
-        .ctf-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+        .product-card-price .original-price {
+            text-decoration: line-through;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-right: 10px;
         }
 
-        .ctf-card {
-            background: var(--dark);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            transition: var(--transition);
-            border: 1px solid rgba(0, 255, 136, 0.1);
-        }
-
-        .ctf-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(0, 255, 136, 0.3);
-        }
-
-        .ctf-header {
-            padding: 15px 20px;
-            background: rgba(0, 255, 136, 0.05);
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        .product-card-actions {
             display: flex;
             justify-content: space-between;
-            align-items: center;
         }
 
-        .ctf-title {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .ctf-date {
-            color: var(--gray);
+        .btn-small {
+            padding: 8px 16px;
             font-size: 0.8rem;
         }
 
-        .ctf-content {
-            padding: 20px;
-        }
-
-        .ctf-content p {
-            color: var(--gray);
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-
-        .ctf-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            font-size: 0.8rem;
-        }
-
-        .ctf-stat {
-            display: flex;
-            align-items: center;
-            color: var(--gray);
-        }
-
-        .ctf-stat i {
-            margin-right: 5px;
-            color: var(--primary);
-        }
-
-        footer {
+        .footer {
             background: var(--dark);
-            padding: 30px 0;
+            padding: 40px 0 20px;
             text-align: center;
             border-top: 1px solid rgba(0, 255, 136, 0.1);
         }
@@ -621,40 +567,98 @@
             transform: translateY(-5px);
         }
 
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .footer-links a {
-            color: var(--gray);
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-
         .copyright {
             color: var(--gray);
             font-size: 0.9rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
         }
 
-        @keyframes fadeInUp {
+        .modal-content {
+            background: var(--dark);
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .modal p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .checkout-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--darker);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 5px;
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        @keyframes modalFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
@@ -662,34 +666,14 @@
             }
         }
 
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
         @media (max-width: 992px) {
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
+            .product-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
 
-            .hero-text {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .about-content {
-                flex-direction: column;
-            }
-
-            .terminal-window {
-                margin: 0 auto 30px;
+            .product-info h1 {
+                font-size: 2rem;
             }
         }
 
@@ -718,32 +702,46 @@
                 display: block;
             }
 
-            .hero-text h1 {
-                font-size: 2.5rem;
+            .product-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .tabs-header {
+                flex-direction: column;
+                border-bottom: none;
+            }
+
+            .tab-btn {
+                border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+                text-align: left;
+            }
+
+            .tab-btn.active::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-info h1 {
+                font-size: 1.8rem;
+            }
+
+            .product-price {
+                font-size: 1.5rem;
             }
 
             .section-title h2 {
                 font-size: 2rem;
             }
 
-            .btn {
-                padding: 10px 20px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-
-            .btn-group {
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .btn-outline {
-                margin-left: 0;
+            .modal-content {
+                margin: 10% 20px;
+                padding: 20px;
             }
         }
     </style>
@@ -768,49 +766,138 @@
         </div>
     </header>
 
-    <section class="section">
+    <section class="product-section">
         <div class="container">
-            <div class="section-title">
-                <h2>Cyber-Security <span>Educational</span></h2>
-            </div>
-            
-            <div class="ctf-container">
-                <div class="ctf-card">
-                    <div class="ctf-header">
-                        <div class="ctf-title">Black Hat - Python</div>
-                        <div class="ctf-date">2025</div>
+            <div class="product-container">
+                <div class="product-gallery">
+                    <span class="product-badge">Premium</span>
+                    <img src="Pyhton-Qaranlıq-Təhqlkə.png" alt="Python - Qaranlıq Təhlükə" class="product-main-image">
+                </div>
+                
+                <div class="product-info">
+                    <h1>Python - Qaranlıq Təhlükə</h1>
+                    <span class="product-author">by Elvin</span>
+                    
+                    <div class="product-price">
+                        <span class="original-price">$59.99</span>
+                        $4.89
                     </div>
-                    <div class="ctf-content">
-                        <p>Black hat orientated python training. this training aims to teach a better understanding of the black hat side and a better grasp of offensive defence.</p>
-                        <div class="ctf-stats">
-                            <div class="ctf-stat"><i class="fas fa-clock"></i>coming soon...</div>
-                            <div class="ctf-stat"><i class="fas fa-certificate"></i>Certificate</div>
-                        </div>
+                    
+                    <p class="product-description">
+                        Unutmayın: Hakerlik bir niyyətdir, texnologiya isə sadəcə bir alətdir. Bu kitabda
+                        öyrənəcəyiniz biliklər sizi ya müdafiəçi, ya da hücumçu edə bilər – seçim sizin
+                        vicdanınıza bağlıdır.
+                    </p>
+                    
+                    <div class="product-actions">
+                        <button class="btn btn-large" onclick="openCheckoutModal()">Buy Now</button>
+                        <button class="btn btn-outline btn-large" onclick="addToCart()">Add to Cart</button>
+                    </div>
+                    
+                    <div class="product-details">
+                        <h3 class="details-title">Product Details</h3>
+                        <ul class="details-list">
+                            <li>Format: PDF</li>
+                            <li>Pages: 95</li>
+                            <li>Language: Azerbaijani</li>
+                            <li>File Size: 12.4MB</li>
+                            <li>Digital e-book</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="product-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Cyber-Security</span>
+                        <span class="tag">Black-Hat</span>
+                        <span class="tag">Ethical Hacking</span>
                     </div>
                 </div>
+            </div>
+            
+            <div class="product-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="description">Description</button>
+                    <button class="tab-btn" data-tab="reviews">Reviews</button>
+                </div>
+                
+                <div class="tab-content active" id="description">
+                    <p>Bu kitab Python proqramlaşdırma dilindən istifadə edərək kibertəhlükəsizlik dünyasına dərin bir nəzər yetirir. Kitabda həm müdafiə, həm də hücum texnikaları əhatə olunur, lakin əsas diqqət etik olmayan hakerlik metodlarına yönəldilib.</p>
+                    <p>Kitabın səhifələrində aşağıdakı mövzuları öyrənəcəksiniz:</p>
+                    <ul class="details-list">
+                        <li>Python əsasları</li>
+                        <li>Kibertəhlükəsizlik alətləri kodlamaq</li>
+                        <li>Black Hat yanaşması və istifadəsi</li>
+                        <li>Black-Hat Programların kodlanması</li>
+                        <li>Malware yazmağın əsasları</li>
+                    </ul>
+                    <p>Bu kitab yalnız təhsil məqsədləri üçün nəzərdə tutulub. Müəllif və nəşriyyat qanunsuz fəaliyyətə görə heç bir məsuliyyət daşımır.</p>
+                </div>
+                
+                <div class="tab-content" id="reviews">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Bu kitab həqiqətən yol göstərici oldu. Pyhtonu öyrənmək və əsasəndə bunu kiberdə tətbiq etmək üçün çox araşdırmışdım anca bu kitabla başlamaq xüsusi dəyər qatdı</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">A</div>
+                            <div class="testimonial-info">
+                                <h5>Əli M***</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Kitab çox ilkin anlayışlardan başlayıb. Pyhton təməlim olduğu üçün başlar sıxıcı gədli ancaq Black hat fəsli mükəmməl idi</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">G</div>
+                            <div class="testimonial-info">
+                                <h5>Günel İ***</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Maraqlıdır. Ən xoşuma gələn hissə müştərilərər özəl qeydlər qoymağınız oldu</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">N</div>
+                            <div class="testimonial-info">
+                                <h5>Nihad S***</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Nəzərə alsaq ki, Azərbaycan dilində bu kimi vəsaitlər yoxdru mükəmməl bir şey olub. Sırf dəstək olmaq üçün aldım</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">S</div>
+                            <div class="testimonial-info">
+                                <h5>Samir R***</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Təzə almışam, oxuyub şərh yazacam  .d</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">S</div>
+                            <div class="testimonial-info">
+                                <h5>Murad M***</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </section>
 
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="copyright">&copy; 2025 Elvin Cyber Education. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-
-        function getCookie(name) {
-            const cookieName = name + "=";
-            const decodedCookie = decodeURIComponent(document.cookie);
-            const cookieArray = decodedCookie.split(';');
-            
-            for(let i = 0; i < cookieArray.length; i++) {
-                let cookie = cookieArray[i];
-                while (cookie.charAt(0) === ' ') {
-                    cookie = cookie.substring(1);
-                }
-                if (cookie.indexOf(cookieName) === 0) {
-                    return cookie.substring(cookieName.length, cookie.length);
-                }
-            }
-            return "";
-        }
-
-
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.querySelector('.nav-links');
         
@@ -821,33 +908,7 @@
                 : '<i class="fas fa-bars"></i>';
         });
         
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-        
-        const themeToggle = document.getElementById('themeToggle');
-        const html = document.documentElement;
-        
-        themeToggle.addEventListener('click', () => {
-            html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
-            themeToggle.innerHTML = html.dataset.theme === 'dark' 
-                ? '<i class="fas fa-moon"></i>' 
-                : '<i class="fas fa-sun"></i>';
-            
-            localStorage.setItem('theme', html.dataset.theme);
-        });
-        
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        html.dataset.theme = savedTheme;
-        themeToggle.innerHTML = savedTheme === 'dark' 
-            ? '<i class="fas fa-moon"></i>' 
-            : '<i class="fas fa-sun"></i>';
-        
         const header = document.getElementById('header');
-        
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
                 header.classList.add('scrolled');
@@ -855,6 +916,46 @@
                 header.classList.remove('scrolled');
             }
         });
+        
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        function openCheckoutModal() {
+            window.location.href = "https://www.shopier.com/36382927";
+        }
+        
+        function closeModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('checkoutModal')) {
+                closeModal();
+            }
+        });
+        
+        document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Payment successful! Your download will begin shortly.');
+            closeModal();
+        });
+        
+        function addToCart() {
+            alert('Product added to your cart!');
+        }
     </script>
 </body>
 </html>
