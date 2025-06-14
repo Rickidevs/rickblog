@@ -761,6 +761,60 @@
              background: var(--primary);
              color: var(--dark);
          }
+
+      .social-sidebar {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #2c3e50;
+            padding: 10px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .social-sidebar a {
+            color: #ecf0f1;
+            font-size: 1.5rem;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .social-sidebar a:hover {
+            transform: scale(1.2);
+        }
+
+        .social-sidebar a:hover::after {
+            content: attr(title);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #3498db;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            margin-left: 10px;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .social-sidebar {
+                position: static;
+                flex-direction: row;
+                justify-content: center;
+                padding: 10px 0;
+                background: transparent;
+                transform: none;
+            }
+
+            .social-sidebar a:hover::after {
+                display: none; /* Mobilde hover efektini gizliyoruz */
+            }
+        }
      </style>
  </head>
  <body>
@@ -794,7 +848,7 @@
                       <div class="terminal-title">bash - rickblog.xyz</div>
                   </div>
                   <div class="terminal-body">
-                      <span class="path">root@elvin:</span> whoami<span class="cursor"></span>
+                      <span class="path">root@elvin:</span><span class="cursor"></span>
                   </div>
               </div>
               <div class="btn-group">
@@ -804,6 +858,13 @@
           </div>
       </div>
   </section>
+
+  <div class="social-sidebar">
+        <a href="https://github.com/rickidevs" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/elvinlatifli" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="https://youtube.com/@elvinlatifli" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://rickpass.xyz" target="_blank" title="YouTube"><i class="fab fa-medium"></i></a>
+    </div>
  
      <section class="section" id="projects">
          <div class="container">
